@@ -11,3 +11,5 @@ In short, HOCON combines YAML, JSON, and Properties files into a single format. 
 Why this project?
 ------------------------
 I created this project because I wanted to be able to use HOCON to configure my [Dropwizard](http://www.dropwizard.io) based applications. Under the hood, Dropwizard uses Jackson to parse its configuration files in either JSON / YAML format. I wanted to be able to easily switch that to using HOCON. Thus, this project was born.
+
+[![Build Status](https://travis-ci.org/tburch/dropwizard-extras.png?branch=master)](https://travis-ci.org/tburch/dropwizard-extras)
