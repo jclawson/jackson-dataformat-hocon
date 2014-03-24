@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jasonclawson</groupId>
     <artifactId>jackson-dataformat-hocon</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6-SNAPSHOT</version>
     <name>HOCON support for Jackson</name>
     <description>HOCON dataformat implementation for Jackson</description>
 
@@ -17,7 +17,7 @@
         <connection>scm:git:git://github.com/jclawson/jackson-dataformat-hocon.git</connection>
         <developerConnection>scm:git:git@github.com:jclawson/jackson-dataformat-hocon.git</developerConnection>
         <url>https://github.com/jclawson/jackson-dataformat-hocon/</url>
-      <tag>jackson-dataformat-hocon-1.0.5</tag>
+      <tag>HEAD</tag>
   </scm>
     
     <developers>
