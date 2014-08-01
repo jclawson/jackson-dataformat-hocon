@@ -74,15 +74,23 @@ public class HoconTreeTraversingParser extends ParserMinimalBase {
             _nextToken = JsonToken.START_ARRAY;
             _nodeCursor = new HoconNodeCursor.Array(n, null);
         } else if (n.valueType() == ConfigValueType.OBJECT) {
-            _nextToken = JsonToken.START_OBJECT;
-            _nodeCursor = new HoconNodeCursor.Object(n, null);
+            if (HoconNodeCursor.isNumericallyIndexed(n)) {
+                _nextToken = JsonToken.START_ARRAY;
+                _nodeCursor = new HoconNodeCursor.NumericallyIndexedObjectBackedArray(n, null);
+            } else {
+                _nextToken = JsonToken.START_OBJECT;
+                _nodeCursor = new HoconNodeCursor.Object(n, null);
+            }
         } else { // value node
             _nodeCursor = new HoconNodeCursor.RootValue(n, null);
         }
     }
     
     public static JsonToken asJsonToken(ConfigValue value) {
-		switch(value.valueType()) {
+        if (HoconNodeCursor.isNumericallyIndexed(value)) {
+            return JsonToken.START_ARRAY;
+        }
+        switch(value.valueType()) {
 			case BOOLEAN:
 				boolean bool = (Boolean) value.unwrapped();
 				return (bool) ? JsonToken.VALUE_TRUE 

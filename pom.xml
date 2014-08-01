@@ -8,8 +8,8 @@
     <url>https://github.com/jclawson/jackson-dataformat-hocon</url>
 
     <properties>
-        <jackson.core.version>2.3.0</jackson.core.version>
-        <jackson.annotations.version>${jackson.core.version}</jackson.annotations.version>
+        <jackson.core.version>2.4.1.1</jackson.core.version>
+        <jackson.annotations.version>2.4.1</jackson.annotations.version>
         <maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
     </properties>
