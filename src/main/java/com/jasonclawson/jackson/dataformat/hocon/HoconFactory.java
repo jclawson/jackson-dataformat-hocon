@@ -102,9 +102,6 @@ public class HoconFactory extends JsonFactory {
     @Override
     public MatchStrength hasFormat(InputAccessor acc) throws IOException
     {
-        /* Actually quite possible to do, thanks to (optional) "---"
-         * indicator we may be getting...
-         */
         if (!acc.hasMoreBytes()) {
             return MatchStrength.INCONCLUSIVE;
         }
@@ -128,10 +125,8 @@ public class HoconFactory extends JsonFactory {
             }
             b = acc.nextByte();
         }
-        // as far as I know, leading space is NOT allowed before "---" marker?
-        if (b == '-' && (acc.hasMoreBytes() && acc.nextByte() == '-')
-                && (acc.hasMoreBytes() && acc.nextByte() == '-')) {
-            return MatchStrength.FULL_MATCH;
+        if (b == '{' || Character.isLetter((char) b) || Character.isDigit((char) b)) {
+            return MatchStrength.WEAK_MATCH;
         }
         return MatchStrength.INCONCLUSIVE;
     }
@@ -457,8 +452,6 @@ public class HoconFactory extends JsonFactory {
     /* Internal methods
     /**********************************************************
      */
-
-    protected final Charset UTF8 = Charset.forName("UTF-8");
 
     protected Reader _createReader(InputStream in, JsonEncoding enc, IOContext ctxt) throws IOException
     {
