@@ -102,9 +102,6 @@ public class HoconFactory extends JsonFactory {
     @Override
     public MatchStrength hasFormat(InputAccessor acc) throws IOException
     {
-        /* Actually quite possible to do, thanks to (optional) "---"
-         * indicator we may be getting...
-         */
         if (!acc.hasMoreBytes()) {
             return MatchStrength.INCONCLUSIVE;
         }
@@ -128,10 +125,8 @@ public class HoconFactory extends JsonFactory {
             }
             b = acc.nextByte();
         }
-        // as far as I know, leading space is NOT allowed before "---" marker?
-        if (b == '-' && (acc.hasMoreBytes() && acc.nextByte() == '-')
-                && (acc.hasMoreBytes() && acc.nextByte() == '-')) {
-            return MatchStrength.FULL_MATCH;
+        if (b == '{' || Character.isLetter((char) b) || Character.isDigit((char) b)) {
+            return MatchStrength.WEAK_MATCH;
         }
         return MatchStrength.INCONCLUSIVE;
     }
@@ -395,39 +390,7 @@ public class HoconFactory extends JsonFactory {
     }
 
     @Override
-    @Deprecated
-    protected HoconTreeTraversingParser _createJsonParser(InputStream in, IOContext ctxt)
-        throws IOException, JsonParseException
-    {
-        return _createParser(in, ctxt);
-    }
-
-    @Override
-    @Deprecated
-    protected JsonParser _createJsonParser(Reader r, IOContext ctxt)
-        throws IOException, JsonParseException
-    {
-        return _createParser(r, ctxt);
-    }
-
-    @Override
-    @Deprecated
-    protected HoconTreeTraversingParser _createJsonParser(byte[] data, int offset, int len, IOContext ctxt)
-        throws IOException, JsonParseException
-    {
-        return _createParser(data, offset, len, ctxt);
-    }
-
-    @Override
     protected JsonGenerator _createGenerator(Writer out, IOContext ctxt)
-        throws IOException
-    {
-    	throw new UnsupportedOperationException("Generating HOCON is not supported yet");
-    }
-
-    @Override
-    @Deprecated
-    protected JsonGenerator _createJsonGenerator(Writer out, IOContext ctxt)
         throws IOException
     {
     	throw new UnsupportedOperationException("Generating HOCON is not supported yet");
@@ -441,12 +404,6 @@ public class HoconFactory extends JsonFactory {
     }
 
     @Override
-    @Deprecated
-    protected JsonGenerator _createUTF8JsonGenerator(OutputStream out, IOContext ctxt) throws IOException {
-    	throw new UnsupportedOperationException("Generating HOCON is not supported yet");
-    }
-    
-    @Override
     protected Writer _createWriter(OutputStream out, JsonEncoding enc, IOContext ctxt) throws IOException
     {
     	throw new UnsupportedOperationException("Generating HOCON is not supported yet");
@@ -457,8 +414,6 @@ public class HoconFactory extends JsonFactory {
     /* Internal methods
     /**********************************************************
      */
-
-    protected final Charset UTF8 = Charset.forName("UTF-8");
 
     protected Reader _createReader(InputStream in, JsonEncoding enc, IOContext ctxt) throws IOException
     {
