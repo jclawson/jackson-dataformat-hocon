@@ -1,13 +1,12 @@
 package com.jasonclawson.jackson.dataformat.hocon;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class HoconTreeTraversingParserTest {
 
@@ -30,5 +29,17 @@ public class HoconTreeTraversingParserTest {
 		
 		System.out.println(c);
 	}
+
+
+    @Test
+    public void testSubstitution() throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper mapper = new ObjectMapper(new HoconFactory());
+//		User user = mapper.readValue(yamlSource, User.class);
+        String hocon = s(c("test-substitution.conf"));
+        System.out.println(hocon);
+        Configuration c = mapper.readValue(hocon, Configuration.class);
+
+        System.out.println(c);
+    }
 
 }

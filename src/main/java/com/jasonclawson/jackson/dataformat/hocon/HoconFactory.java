@@ -376,8 +376,9 @@ public class HoconFactory extends JsonFactory {
     {
     	ConfigParseOptions options = ConfigParseOptions.defaults();
         Config config = ConfigFactory.parseReader(r, options);
-    	
-    	return new HoconTreeTraversingParser(config.root(), _objectCodec);
+        
+    	Config resolvedConfig = config.resolve();
+        return new HoconTreeTraversingParser(resolvedConfig.root(), _objectCodec);
     }
 
     @SuppressWarnings("resource")
