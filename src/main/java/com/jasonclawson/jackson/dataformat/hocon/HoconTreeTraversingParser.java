@@ -327,34 +327,34 @@ public class HoconTreeTraversingParser extends ParserMinimalBase {
     @Override
     public BigInteger getBigIntegerValue() throws IOException, JsonParseException {
     	//I wish we could get at the string representation instead
-    	Long value = (Long) currentNumericNode().unwrapped();
+    	Long value = ((Number)  currentNumericNode().unwrapped()).longValue();
     	return BigInteger.valueOf(value);
     }
 
     @Override
     public BigDecimal getDecimalValue() throws IOException, JsonParseException {
-        Double value = (Double) currentNumericNode().unwrapped();
+        Double value = ((Number) currentNumericNode().unwrapped()).doubleValue();
     	return BigDecimal.valueOf(value);
     }
 
     @Override
     public double getDoubleValue() throws IOException, JsonParseException {
-        return (Double) currentNumericNode().unwrapped();
+        return ((Number) currentNumericNode().unwrapped()).doubleValue();
     }
 
     @Override
     public float getFloatValue() throws IOException, JsonParseException {
-        return (Float) currentNumericNode().unwrapped();
+        return ((Number) currentNumericNode().unwrapped()).floatValue();
     }
 
     @Override
     public long getLongValue() throws IOException, JsonParseException {
-        return (Long) currentNumericNode().unwrapped();
+        return ((Number) currentNumericNode().unwrapped()).longValue();
     }
 
     @Override
     public int getIntValue() throws IOException, JsonParseException {
-        return (Integer) currentNumericNode().unwrapped();
+        return ((Number) currentNumericNode().unwrapped()).intValue();
     }
 
     @Override
