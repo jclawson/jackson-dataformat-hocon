@@ -7,6 +7,7 @@ public class Configuration {
 	
 		public String something;
 		public Context context;
+		public float value;
 		
 		public static class Context {
 			public Lib lib;
