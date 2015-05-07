@@ -36,6 +36,25 @@ public abstract class HoconNodeCursor extends JsonStreamContext {
         _currentName = name;
     }
 	
+	/**
+     * HOCON specific method to construct the path for this node. Useful for
+     * interacting directly with the underlying Config instance in custom
+     * deserializers.
+     * 
+	 * @return The path of this node cursor.
+	 */
+	public String constructPath() {
+	    return constructPath(new StringBuilder()).toString();
+	}
+	
+	private StringBuilder constructPath(StringBuilder initial) {
+	    if (_parent != null) {
+	        return _parent.constructPath(initial).append('.').append(_currentName);
+	    } else {
+	        return initial.append(_currentName);
+	    }
+	}
+	
 	public abstract JsonToken nextToken();
 
     public abstract JsonToken endToken();

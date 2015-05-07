@@ -58,6 +58,18 @@ public class HoconTreeTraversingParser extends ParserMinimalBase {
      */
     protected boolean _closed;
 
+    private final ConfigObject _rootObject;
+    
+    /**
+     * HOCON specific getter for the originating ConfigObject. Useful for
+     * accessing the underlying Config instance in custom deserializers.
+     * 
+     * @return The ConfigObject with which this parser was instantiated.
+     */
+    public ConfigObject getConfigObject() {
+        return _rootObject;
+    }
+    
     /*
     /**********************************************************
     /* Life-cycle
@@ -69,6 +81,7 @@ public class HoconTreeTraversingParser extends ParserMinimalBase {
     public HoconTreeTraversingParser(ConfigObject n, ObjectCodec codec)
     {
         super(0);
+        _rootObject = n;
         _objectCodec = codec;
         if (n.valueType() == ConfigValueType.LIST) {
             _nextToken = JsonToken.START_ARRAY;
@@ -243,12 +256,14 @@ public class HoconTreeTraversingParser extends ParserMinimalBase {
 
     @Override
     public JsonLocation getTokenLocation() {
-        return JsonLocation.NA;
+        final ConfigValue node = currentNode();
+        return node == null ? JsonLocation.NA : new HoconJsonLocation(node.origin());
     }
 
     @Override
     public JsonLocation getCurrentLocation() {
-        return JsonLocation.NA;
+        final ConfigValue node = currentNode();
+        return node == null ? JsonLocation.NA : new HoconJsonLocation(node.origin());
     }
 
     /*
