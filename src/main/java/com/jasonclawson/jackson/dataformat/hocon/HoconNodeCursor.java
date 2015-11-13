@@ -105,9 +105,20 @@ public abstract class HoconNodeCursor extends JsonStreamContext {
                 if (map.isEmpty()) {
                     return false;
                 }
+                // Because TypeSafe config does not preserve types of keys 
+                // we have to revert to heuristics to detect if it was originally an array
+                // two conditions are verified:
+                // 1. all keys must be non-negative integers
+                // 2. all keys must form a consecutive set of integers 0..N-1 where N is size of map
+                int size = map.size();
                 for (String key : map.keySet()) {
                     try {
-                        Integer.parseInt(key);
+                        int idx = Integer.parseInt(key);
+                        if (idx < 0) {
+                            return false;
+                        } else if (idx >= size) {
+                            return false;
+                        }
                     } catch (NumberFormatException e) {
                         return false;
                     }
