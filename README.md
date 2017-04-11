@@ -12,4 +12,28 @@ Why this project?
 ------------------------
 I created this project because I wanted to be able to use HOCON to configure my [Dropwizard](http://www.dropwizard.io) based applications. Under the hood, Dropwizard uses Jackson to parse its configuration files in either JSON / YAML format. I wanted to be able to easily switch that to using HOCON. Thus, this project was born.
 
+Some Caveats
+------------
+There is support for HOCON include statements if the URL or File version of ObjectMapper is used.  (Unfortunately, the Jackson InputDecorator will be ignored).
+```java
+  ObjectMapper mapper = new ObjectMapper(new HoconFactory());
+  Configuration c = mapper.readValue(new URL("http://example.com/path/test.conf"), Configuration.class);
+```
+
+```java
+  ObjectMapper mapper = new ObjectMapper(new HoconFactory());
+  Configuration c = mapper.readValue(new File(filepath), Configuration.class);
+```
+
+There is support for Jackson InputDecorator if the InputStream or Reader version of ObjectMapper is used.  (Unfortunately, the HOCON statements include will be ignored).
+```java
+  ObjectMapper mapper = new ObjectMapper(new HoconFactory());
+  Configuration c = mapper.readValue(new FileInputStream("http://example.com/path/test.conf"), Configuration.class);
+```
+
+```java
+  ObjectMapper mapper = new ObjectMapper(new HoconFactory());
+  Configuration c = mapper.readValue(new InputStreamReader(is), Configuration.class);
+```
+
 [![Build Status](https://travis-ci.org/tburch/dropwizard-extras.png?branch=master)](https://travis-ci.org/tburch/dropwizard-extras)
