@@ -19,7 +19,7 @@ public final class UTF8Reader
     private final static int DEFAULT_BUFFER_SIZE = 8000;
     
     /**
-     * This <code>ThreadLocal</code> contains a {@link java.lang.ref.SoftRerefence}
+     * This <code>ThreadLocal</code> contains a {@link java.lang.ref.SoftReference}
      * to a byte array used for holding content to decode
      */
     final protected static ThreadLocal<SoftReference<byte[][]>> _bufferRecycler
@@ -331,6 +331,8 @@ public final class UTF8Reader
     /**
      * Method for reading as many bytes from the underlying stream as possible
      * (that fit in the buffer), to the beginning of the buffer.
+     * @return The number of bytes read or -1 if inputSource not available
+     * @throws IOException on read exceptions
      */
     protected final int readBytes()
         throws IOException
@@ -351,8 +353,10 @@ public final class UTF8Reader
      * Method for reading as many bytes from the underlying stream as possible
      * (that fit in the buffer considering offset), to the specified offset.
      *
+     * @param offset The offset into the buffer
      * @return Number of bytes read, if any; -1 to indicate none available
      *  (that is, end of input)
+     *  @throws IOException on read exceptions
      */
     protected final int readBytesAt(int offset)
         throws IOException

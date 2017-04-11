@@ -78,6 +78,7 @@ public abstract class HoconNodeCursor extends JsonStreamContext {
     /**
      * Method called to create a new context for iterating all
      * contents of the current structured value (JSON array or object)
+     * @return a cursor over the children of this node
      */
     public final HoconNodeCursor iterateChildren() {
     	ConfigValue n = currentNode();
