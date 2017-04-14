@@ -23,20 +23,9 @@ public class TestArrays {
     public void testArrays() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new HoconFactory());
 
-        System.out.println("Mapping hocon to Container class for:");
-        System.out.println(hoconOne);
         Container cOne = mapper.readValue(hoconOne, Container.class);
-        System.out.println("The Container class's list value is " + cOne.list);
-
-        System.out.println("Mapping hocon to Container class for:");
-        System.out.println(hoconTwo);
         Container cTwo = mapper.readValue(hoconTwo, Container.class);
-        System.out.println("The Container class's list value is " + cTwo.list);
-
-        System.out.println("Mapping hocon to Container class for:");
-        System.out.println(hoconThree);
         Container cThree = mapper.readValue(hoconThree, Container.class);
-        System.out.println("The Container class's list value is " + cThree.list);
 
         Assert.assertNotNull(cOne.list);
         Assert.assertNotNull(cTwo.list);
@@ -83,7 +72,6 @@ public class TestArrays {
         c1.list = list;
         
         String json = jsonmapper.writeValueAsString(c1);
-        System.out.println(list + " => " + json);
         Container c2 = hoconmapper.readValue(json, Container.class);
         
         assertEquals(c1,c2);

@@ -11,7 +11,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -22,9 +21,7 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.format.InputAccessor;
 import com.fasterxml.jackson.core.format.MatchStrength;
 import com.fasterxml.jackson.core.io.IOContext;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigParseOptions;
+import com.typesafe.config.*;
 
 /**
  * This code was pretty much copied from the jackson YAMLFactory
@@ -164,13 +161,9 @@ public class HoconFactory extends JsonFactory {
     public HoconTreeTraversingParser createParser(File f)
         throws IOException, JsonParseException
     {
-        IOContext ctxt = _createContext(f, true);
-        InputStream in = new FileInputStream(f);
-        // [JACKSON-512]: allow wrapping with InputDecorator
-        if (_inputDecorator != null) {
-            in = _inputDecorator.decorate(ctxt, in);
-        }
-        return _createParser(in, ctxt);
+        // choosing to support hocon include instead of inputDecorator
+        Config resolvedConfig = ConfigFactory.parseFile(f).resolve();
+        return new HoconTreeTraversingParser(resolvedConfig.root(), _objectCodec);
     }
     
     @SuppressWarnings("resource")
@@ -178,13 +171,9 @@ public class HoconFactory extends JsonFactory {
     public HoconTreeTraversingParser createParser(URL url)
         throws IOException, JsonParseException
     {
-        IOContext ctxt = _createContext(url, true);
-        InputStream in = _optimizedStreamFromURL(url);
-        // [JACKSON-512]: allow wrapping with InputDecorator
-        if (_inputDecorator != null) {
-            in = _inputDecorator.decorate(ctxt, in);
-        }
-        return _createParser(in, ctxt);
+        // choosing to support hocon include instead of inputDecorator
+        Config resolvedConfig = ConfigFactory.parseURL(url).resolve();
+        return new HoconTreeTraversingParser(resolvedConfig.root(), _objectCodec);
     }
 
     @SuppressWarnings("resource")
@@ -374,10 +363,7 @@ public class HoconFactory extends JsonFactory {
     protected HoconTreeTraversingParser _createParser(Reader r, IOContext ctxt)
         throws IOException, JsonParseException
     {
-    	ConfigParseOptions options = ConfigParseOptions.defaults();
-        Config config = ConfigFactory.parseReader(r, options);
-        
-    	Config resolvedConfig = config.resolve();
+        Config resolvedConfig = ConfigFactory.parseReader(r).resolve();
         return new HoconTreeTraversingParser(resolvedConfig.root(), _objectCodec);
     }
 
@@ -425,7 +411,6 @@ public class HoconFactory extends JsonFactory {
         if (enc == JsonEncoding.UTF8) {
             boolean autoClose = ctxt.isResourceManaged() || isEnabled(JsonParser.Feature.AUTO_CLOSE_SOURCE);
             return new UTF8Reader(in, autoClose);
-//          return new InputStreamReader(in, UTF8);
         }
         return new InputStreamReader(in, enc.getJavaName());
     }

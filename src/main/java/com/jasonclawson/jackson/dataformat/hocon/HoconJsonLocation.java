@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.JsonLocation;
 import com.typesafe.config.ConfigOrigin;
+import com.typesafe.config.impl.ConfigImplUtil;
 
 public class HoconJsonLocation extends JsonLocation implements ConfigOrigin {
     private static final long serialVersionUID = 1L;
@@ -44,5 +45,15 @@ public class HoconJsonLocation extends JsonLocation implements ConfigOrigin {
     @Override
     public List<String> comments() {
         return origin.comments();
+    }
+
+    @Override
+    public ConfigOrigin withComments(List<String> comments) {
+        return origin.withComments(comments);
+    }
+
+    @Override
+    public ConfigOrigin withLineNumber(int i) {
+        return origin.withLineNumber(i);
     }
 }
