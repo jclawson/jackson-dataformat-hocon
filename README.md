@@ -49,3 +49,5 @@ or
 ```
 
 [![Build Status](https://travis-ci.org/tburch/dropwizard-extras.png?branch=master)](https://travis-ci.org/tburch/dropwizard-extras)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jasonclawson/jackson-dataformat-hocon/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jasonclawson/jackson-dataformat-hocon/)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jasonclawson/jackson-dataformat-hocon/badge.svg)](http://www.javadoc.io/doc/com.jasonclawson/jackson-dataformat-hocon)
